@@ -51,38 +51,43 @@ class JaegerClinet
     }
 
     /**
-     * 获取分布式锁
+     * 创建jaeger客户端trace
      * @param array $arguments 请求参数
      * @return mixed|void
      */
-    public function acquireLock(array $arguments)
+    public function create(array $arguments)
     {
-        $header = [];
-        $spanName = $arguments['span_name']??$this->spanName;
-        $spanContext = $this->clientTracer->extract(Formats\TEXT_MAP, $_SERVER);
-        if ($spanContext){
-            $clientSpan = $this->clientTracer->startSpan($spanName, ['child_of' => $spanContext]);
-        }else{
-            $clientSpan = $this->clientTracer->startSpan($spanName);
-        }
-        if ($arguments['version'])
-            $clientSpan->addBaggageItem("version", $arguments['version']);
-
-        $this->clientTracer->inject($clientSpan->spanContext, Formats\TEXT_MAP, $header);
-
-        $client = Client::create($this->config['create_url'], false);
-
-        if($header){
-            foreach($header as $key => $val){
-                $client->setHeader($key, $val);
+        try {
+            $header = [];
+            $spanName = $arguments['span_name'] ?? $this->spanName;
+            $spanContext = $this->clientTracer->extract(Formats\TEXT_MAP, $_SERVER);
+            if ($spanContext) {
+                $clientSpan = $this->clientTracer->startSpan($spanName, ['child_of' => $spanContext]);
+            } else {
+                $clientSpan = $this->clientTracer->startSpan($spanName);
             }
-        }
-        if (isset($arguments['tags']) && !empty($arguments['tags']) && is_array($arguments['tags'])){
-            foreach ($arguments['tags'] as $k=>$v){
-                $clientSpan->setTag($k, $v);
+            if ($arguments['version'])
+                $clientSpan->addBaggageItem("version", $arguments['version']);
+
+            $this->clientTracer->inject($clientSpan->spanContext, Formats\TEXT_MAP, $header);
+
+            $client = Client::create($this->config['create_url'], false);
+
+            if ($header) {
+                foreach ($header as $key => $val) {
+                    $client->setHeader($key, $val);
+                }
             }
+            if (isset($arguments['tags']) && !empty($arguments['tags']) && is_array($arguments['tags'])) {
+                foreach ($arguments['tags'] as $k => $v) {
+                    $clientSpan->setTag($k, $v);
+                }
+            }
+            $clientSpan->finish();
+            return json_encode(['status'=>'success', 'msg'=>'链路注入成功']);
+        }catch (\Exception $e){
+            return json_encode(['status'=>'failed', 'msg'=>$e->getMessage()]);
         }
-        $clientSpan->finish();
     }
 
     public function __destruct()
