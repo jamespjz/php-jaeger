@@ -1,0 +1,25 @@
+{
+    "name": "jamespi/php-jaeger",
+    "description": "基于jukylin/jaeger-php实现客户端",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "pijianzhong",
+            "email": "jianzhongpi@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php":">=7.0",
+        "packaged/thrift" : "0.10.0",
+        "hprose/hprose": ">=2.0.0",
+        "opentracing/opentracing" : "1.0.0-beta5",
+		"jukylin/jaeger-php":"^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jamespi\\Jaeger\\": "Src/"
+        }
+    }
+}
