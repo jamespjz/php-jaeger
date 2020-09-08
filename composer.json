@@ -14,11 +14,9 @@
         "php":">=7.0",
         "packaged/thrift" : "0.10.0",
         "hprose/hprose": ">=2.0.0",
-		"jukylin/jaeger-php":"^2.1"
-    },
-	"require-1.0.0-beta5": {
+		"jukylin/jaeger-php":"^2.1",
 		"opentracing/opentracing": "1.0.0-beta5"
-	},
+    },
     "autoload": {
         "psr-4": {
             "Jamespi\\Jaeger\\": "Src/"
