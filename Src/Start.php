@@ -10,7 +10,7 @@
  * +----------------------------------------------------------------------
  */
 
-namespace Jamespi\Redis;
+namespace Jamespi\Jaeger;
 
 use ReflectionClass;
 use Jamespi\Jaeger\Controller\JaegerClient;
