@@ -60,6 +60,12 @@ class JaegerClient
         try {
             $header = [];
             $spanName = $arguments['span_name'] ?? $this->spanName;
+			if (!isset($_SERVER['UBER-TRACE-ID']) && isset($_SERVER['HTTP_UBER_TRACE_ID'])) {
+                $_SERVER['UBER-TRACE-ID'] = $_SERVER['HTTP_UBER_TRACE_ID'];
+            }
+            if (!isset($_SERVER['UBERCTX-VERSION']) && isset($_SERVER['HTTP_UBERCTX_VERSION'])) {
+                $_SERVER['UBERCTX-VERSION'] = $_SERVER['HTTP_UBERCTX_VERSION'];
+            }
             $spanContext = $this->clientTracer->extract(Formats\TEXT_MAP, $_SERVER);
             if ($spanContext) {
                 $clientSpan = $this->clientTracer->startSpan($spanName, ['child_of' => $spanContext]);
