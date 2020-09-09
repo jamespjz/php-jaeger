@@ -30,9 +30,14 @@ $params = [
     ]//标签，便于查询
 ];
 
-//客户端
-echo (new Start())->run(1, $config)->create($params);
-//服务端
+链路追踪调用顺序：
+//创建服务
 echo (new Start())->run(2, $config)->create($params);
+//节点1
+echo (new Start())->run(1, $config)->create($params1);//选择实际场景参数（参考$params）
+//节点2
+echo (new Start())->run(1, $config)->create($params2);//选择实际场景参数（参考$params）
+//节点3
+echo (new Start())->run(1, $config)->create($params3);//选择实际场景参数（参考$params）
 
 ````

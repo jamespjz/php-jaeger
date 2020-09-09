@@ -67,7 +67,7 @@ class JaegerServer
                 $serverSpan = $this->serverTracer->startSpan($spanName);
             }
 
-            $this->clientTracer->inject($serverSpan->spanContext, Formats\TEXT_MAP, $_SERVER);
+            $this->serverTracer->inject($serverSpan->spanContext, Formats\TEXT_MAP, $_SERVER);
 
             $serverSpan->finish();
             return json_encode(['status'=>'success', 'msg'=>'链路注入成功']);
