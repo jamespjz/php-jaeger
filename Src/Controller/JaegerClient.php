@@ -90,7 +90,7 @@ class JaegerClient
                 }
             }
             $clientSpan->finish();
-            return json_encode(['status'=>'success', 'msg'=>'链路注入成功', 'data'=>['traceId'=>$header['UBER-TRACE-ID']] ]);
+            return json_encode(['status'=>'success', 'msg'=>'链路注入成功', 'data'=>['headers'=>$header] ]);
         }catch (\Exception $e){
             return json_encode(['status'=>'failed', 'msg'=>$e->getMessage()]);
         }
