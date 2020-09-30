@@ -53,9 +53,10 @@ class JaegerClient
     /**
      * 创建jaeger客户端trace
      * @param array $arguments 请求参数
+	 * @param int $time 休眠时间
      * @return mixed|void
      */
-    public function create(array $arguments)
+    public function create(array $arguments, int $time = 0)
     {
         try {
             $header = [];
@@ -72,6 +73,11 @@ class JaegerClient
             } else {
                 $clientSpan = $this->clientTracer->startSpan($spanName);
             }
+			
+			if($time){
+				sleep($time);
+			}
+			
             if ($arguments['version'])
                 $clientSpan->addBaggageItem("version", $arguments['version']);
 
